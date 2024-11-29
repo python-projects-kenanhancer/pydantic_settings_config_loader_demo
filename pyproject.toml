@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "pydantic-settings-config-loader-demo"
+version = "0.1.0"
+description = ""
+authors = ["kenan hancer <kenanhancer@hotmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = "^2.10.1"
+pydantic-settings = "^2.6.1"
+pyyaml = "^6.0.2"
+google-cloud-secret-manager = "^2.21.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+black = "^24.10.0"
+isort = "^5.13.2"
+
+[tool.pytest.ini_options]
+pythonpath = ["./src"]
+testpaths = ["tests"]
+norecursedirs = [".venv", ".pytest_cache", "__pycache__", ".vscode"]
+# env = []
+
+[tool.isort]
+include_trailing_comma = true
+split_on_trailing_comma = true
+profile = "black"
+
+[tool.black]
+line-length = 130
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
