@@ -25,15 +25,7 @@ def cleanup():
 
     # Define paths to clean
     paths_to_remove: list[Path] = [
-        # project_root / ".venv",  # Virtual environment
-        # project_root / ".env",  # .env file
-        # project_root / ".env.dev",
-        # project_root / ".env.local",
-        # project_root / ".env.uat",
-        # project_root / ".vscode",  # VS Code settings
-        project_root / ".git" / "hooks" / "pre-commit",  # Pre-commit hook
         project_root / ".pytest_cache",  # Pytest cache
-        project_root / "__pycache__",  # Python cache
         project_root / ".mypy_cache",  # Mypy cache
         project_root / "build",  # Build artifacts
         project_root / "dist",  # Distribution files
@@ -71,26 +63,15 @@ def cleanup():
             except Exception as e:
                 logging.error(f"Failed to remove {path}: {e}")
 
-    # Optionally, reset other Git hooks to sample hooks
-    hooks_dir = project_root / ".git" / "hooks"
-    if hooks_dir.exists():
-        logging.info(f"Resetting Git hooks in: {hooks_dir}")
-        for hook in hooks_dir.iterdir():
-            if hook.is_file() and not hook.name.endswith(".sample"):
-                try:
-                    hook.unlink()
-                    logging.info(f"Removed existing hook: {hook.name}")
-                    sample_hook = hooks_dir / f"{hook.name}.sample"
-                    if sample_hook.exists():
-                        shutil.copy(sample_hook, hook)
-                        hook.chmod(0o755)
-                        logging.info(f"Reset hook: {hook.name} to sample")
-                    else:
-                        logging.warning(f"Sample hook not found for: {hook.name}")
-                except Exception as e:
-                    logging.error(f"Failed to reset hook {hook.name}: {e}")
-    else:
-        logging.warning(f"Hooks directory does not exist: {hooks_dir}")
+    # Remove all __pycache__ directories
+    for pycache in project_root.rglob("__pycache__"):
+        try:
+            shutil.rmtree(pycache)
+            logging.info(f"Removed __pycache__: {pycache}")
+        except FileNotFoundError:
+            logging.warning(f"__pycache__ not found (skipped): {pycache}")
+        except Exception as e:
+            logging.error(f"Failed to remove __pycache__ {pycache}: {e}")
 
     logging.info("Cleanup completed successfully!")
 
