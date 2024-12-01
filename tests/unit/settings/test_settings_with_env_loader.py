@@ -4,7 +4,7 @@ from config_loaders import ConfigLoaderFactory, EnvLoaderArgs
 from schemas import Settings
 
 
-class TestSettingsParameterized:
+class TestSettingsWithEnvLoader:
 
     @pytest.fixture
     def env_suffix(self, request):

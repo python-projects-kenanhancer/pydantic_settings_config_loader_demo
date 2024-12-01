@@ -1,10 +1,10 @@
 import pytest
 
-from config_loaders import ConfigLoaderFactory, EnvLoaderArgs
+from config_loaders import ConfigLoaderFactory, YamlLoaderArgs
 from schemas import Settings
 
 
-class TestSettingsAdvanced:
+class TestSettingsWithYamlLoaderAdvanced:
 
     @pytest.fixture
     def env_suffix(self, request):
@@ -15,11 +15,11 @@ class TestSettingsAdvanced:
 
         if env_suffix:
             env_suffix = env_suffix.lower()
-            env_file = f".env.{env_suffix}"
+            env_file = f"config.{env_suffix}.yaml"
         else:
-            env_file = ".env"
+            env_file = "config.yaml"
 
-        return Settings.load(ConfigLoaderFactory.get_loader(EnvLoaderArgs(file_path=env_file)))
+        return Settings.load(ConfigLoaderFactory.get_loader(YamlLoaderArgs(file_path=env_file)))
 
     @pytest.fixture
     def expected_settings(self, env_suffix):

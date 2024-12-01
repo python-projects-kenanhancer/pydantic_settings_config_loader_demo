@@ -5,13 +5,13 @@ feature_flags:
   split_balances_enabled: true
   circuit_breaker_enabled: true
   circuit_breaker_checks_subset_config: { "first_name": "Ricardo" }
-  circuit_breaker_duration: 11
+  circuit_breaker_duration: 5
 
 # # Meta-Database Settings
 meta_database:
-  postgres_user: airflow
-  postgres_password: airflow
-  postgres_db: airflow
+  postgres_user: KENAN
+  postgres_password: KENAN
+  postgres_db: KENAN
 
 # Backend Database Settings
 backend_db:
@@ -29,8 +29,8 @@ airflow_init:
 airflow_core:
   fernet_key: "" # This is a default to use in our local environment; it holds no security threat
   dags_are_paused_at_creation: true
-  load_examples: false
-  airflow_uid: 52111
+  load_examples: true
+  airflow_uid: 1000
 
 # CDT to Nexum Settings
 cdt_to_nexum:
