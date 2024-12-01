@@ -1,24 +1,37 @@
-import json
+import logging
 
 from google.auth.exceptions import DefaultCredentialsError
 from google.cloud.secretmanager import SecretManagerServiceClient
 
-from .config_loader import ConfigLoader
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
-class GcpSecretLoader(ConfigLoader):
+class GcpSecretLoader:
+    """
+    Base class for fetching secrets from Google Cloud Secret Manager.
+    Returns the secret as a raw string.
+    """
+
     def __init__(self, secret_name: str, project_id: str):
         self.secret_name = secret_name
         self.project_id = project_id
 
-    def load(self) -> dict:
+    def fetch_secret(self) -> str | None:
+        """
+        Fetches the raw secret data from Google Cloud Secret Manager.
+        """
         try:
             client = SecretManagerServiceClient()
-            secret_path = f"projects/{self.project_id}/secrets/{self.secret_name}/versions/latest"
-            response = client.access_secret_version(name=secret_path)
-            secret_payload = response.payload.data.decode("UTF-8")
-            return json.loads(secret_payload)
+            # secret_path = f"projects/{self.project_id}/secrets/{self.secret_name}/versions/latest"
+            secret_path = client.secret_version_path(self.project_id, self.secret_name, "latest")
+            response = client.access_secret_version(name=secret_path)  # type: ignore
+            logger.info(f"Successfully fetched secret: {self.secret_name}")
+            return response.payload.data.decode("UTF-8")
         except DefaultCredentialsError as e:
-            print(f"Error loading credentials: {e}")
-            # Handle the error appropriately
-            return {}
+            logger.error(f"Error loading credentials: {e}")
+            return None
+        except Exception as e:
+            logger.exception(f"An unexpected error occurred while fetching secret: {self.secret_name}")
+            return None

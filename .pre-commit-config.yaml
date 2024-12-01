@@ -1,0 +1,40 @@
+repos:
+  - repo: local
+    hooks:
+      - id: black
+        name: black
+        entry: poetry run black
+        language: system
+        types: [python]
+
+      - id: isort
+        name: isort
+        entry: poetry run isort
+        language: system
+        args: ["--profile", "black"]
+        types: [python]
+
+      - id: ruff
+        name: ruff
+        entry: poetry run ruff
+        language: system
+        args: ["--fix", "--exit-non-zero-on-fix"]
+        types: [python]
+
+      - id: check-yaml
+        name: check-yaml
+        entry: poetry run pre-commit-hooks check-yaml
+        language: system
+        files: \.(yml|yaml)$
+
+      - id: end-of-file-fixer
+        name: end-of-file-fixer
+        entry: poetry run pre-commit-hooks end-of-file-fixer
+        language: system
+        types: [text]
+
+      - id: trailing-whitespace
+        name: trailing-whitespace
+        entry: poetry run pre-commit-hooks trailing-whitespace-fixer
+        language: system
+        types: [text]

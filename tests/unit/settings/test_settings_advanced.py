@@ -1,6 +1,7 @@
 import pytest
 
-from settings import Settings, load_environment_file
+from config_loaders import ConfigLoaderFactory, EnvLoaderArgs
+from schemas import Settings
 
 
 class TestSettingsAdvanced:
@@ -12,9 +13,13 @@ class TestSettingsAdvanced:
     @pytest.fixture
     def settings(self, env_suffix):
 
-        load_environment_file(env_suffix)
+        if env_suffix:
+            env_suffix = env_suffix.lower()
+            env_file = f".env.{env_suffix}"
+        else:
+            env_file = ".env"
 
-        return Settings()
+        return Settings.load(ConfigLoaderFactory.get_loader(EnvLoaderArgs(file_path=env_file)))
 
     @pytest.fixture
     def expected_settings(self, env_suffix):

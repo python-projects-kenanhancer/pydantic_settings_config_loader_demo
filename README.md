@@ -106,19 +106,26 @@ This will create or overwrite the .vscode/extensions.json file with a list of cu
 
 1. Clone the Repository:
 
-```bash
-git clone <repository-url>
-cd pydantic_settings_config_loader_demo
-```
+    ```bash
+    git clone <repository-url>
+    cd pydantic_settings_config_loader_demo
+    ```
 
-2. Install Dependencies:
+1. Install Dependencies:
 
-```bash
-poetry install
-```
+    ```bash
+    poetry install
+    poetry run pre-commit install --overwrite
+    ```
 
-3. Run Tests: Run the tests using pytest:
+    or
 
-```bash
-poetry run pytest
-```
+    ```bash
+    poetry run setup
+    ```
+
+1. Run Tests: Run the tests using pytest:
+
+    ```bash
+    poetry run pytest
+    ```

@@ -1,6 +1,10 @@
-from config_loaders import ConfigLoaderFactory
-from config_loaders.loader_args import EnvLoaderArgs, GcpLoaderArgs, YamlLoaderArgs
-from settings import Settings
+from config_loaders import (
+    ConfigLoaderFactory,
+    EnvLoaderArgs,
+    YamlLoaderArgs,
+)
+from config_loaders.loader_args.gcp_loader_json_args import GcpLoaderJsonArgs
+from schemas import Settings
 
 # Benefits of Implemented Patterns and Principles:
 # - Extensibility:
@@ -20,37 +24,53 @@ from settings import Settings
 # The use of LoaderArgs and its subclasses (GcpLoaderArgs, YamlLoaderArgs, EnvLoaderArgs) encapsulates the parameters required to initialize different loaders - Parameter Object Pattern
 
 
-def main():
-    project_id = "nexum-dev-364711"
-    secret_name = "app-config-json"
+def load_with_gcp_json_loader(secret_name: str, project_id: str):
 
-    gcp_config_loader = ConfigLoaderFactory.get_loader(GcpLoaderArgs(secret_name=secret_name, project_id=project_id))
-
-    yaml_config_loader = ConfigLoaderFactory.get_loader(YamlLoaderArgs(file_path="config.yaml"))
-
-    yaml_local_config_loader = ConfigLoaderFactory.get_loader(YamlLoaderArgs(file_path="config.local.yaml"))
-
-    env_config_loader = ConfigLoaderFactory.get_loader(EnvLoaderArgs(file_path=".env"))
-
-    env_local_config_loader = ConfigLoaderFactory.get_loader(EnvLoaderArgs(file_path=".env.local"))
+    gcp_config_loader = ConfigLoaderFactory.get_loader(GcpLoaderJsonArgs(secret_name=secret_name, project_id=project_id))
 
     settings_from_gcp = Settings.load(gcp_config_loader)
 
-    print(settings_from_gcp)
+    return settings_from_gcp
+
+
+def load_with_yaml_config_loader(file_path: str):
+    yaml_config_loader = ConfigLoaderFactory.get_loader(YamlLoaderArgs(file_path=file_path))
 
     settings_from_yaml_file = Settings.load(yaml_config_loader)
 
-    print(settings_from_yaml_file)
+    return settings_from_yaml_file
 
-    settings_from_yaml_local_file = Settings.load(yaml_local_config_loader)
 
-    print(settings_from_yaml_local_file)
+def load_with_env_config_loader(file_path: str):
+    env_config_loader = ConfigLoaderFactory.get_loader(EnvLoaderArgs(file_path=file_path))
 
     settings_from_env_file = Settings.load(env_config_loader)
 
+    return settings_from_env_file
+
+
+def main():
+
+    project_id = "nexum-dev-364711"
+    secret_name = "app-config-json"
+
+    settings_from_gcp = load_with_gcp_json_loader(secret_name=secret_name, project_id=project_id)
+
+    print(settings_from_gcp)
+
+    settings_from_yaml_file = load_with_yaml_config_loader("config.yaml")
+
+    print(settings_from_yaml_file)
+
+    settings_from_yaml_local_file = load_with_yaml_config_loader("config.local.yaml")
+
+    print(settings_from_yaml_local_file)
+
+    settings_from_env_file = load_with_env_config_loader(".env")
+
     print(settings_from_env_file)
 
-    settings_from_env_local_file = Settings.load(env_local_config_loader)
+    settings_from_env_local_file = load_with_env_config_loader(".env.local")
 
     print(settings_from_env_local_file)
 

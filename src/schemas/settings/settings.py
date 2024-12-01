@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 from config_loaders import ConfigLoader
-from settings import (
+from schemas.settings import (
     AirflowCoreSettings,
     AirflowInitSettings,
     BackendDBSettings,
