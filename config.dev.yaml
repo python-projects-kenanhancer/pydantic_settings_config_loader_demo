@@ -4,7 +4,7 @@ project_env: dev
 feature_flags:
   split_balances_enabled: true
   circuit_breaker_enabled: false
-  circuit_breaker_checks_subset_config: { "first_name": "Ricardo" }
+  circuit_breaker_checks_subset_config: { first_name: Ricardo }
   circuit_breaker_duration: -3
 
 # # Meta-Database Settings
@@ -34,11 +34,11 @@ airflow_core:
 
 # CDT to Nexum Settings
 cdt_to_nexum:
-  airflow_home: "$PWD"
+  airflow_home: $PWD
   gcp_project: ""
-  google_application_credentials: "$HOME/.config/gcloud/application_default_credentials.json"
+  google_application_credentials: $HOME/.config/gcloud/application_default_credentials.json
   cdt_dataset: cdt_ovo_to_nexum
   google_cloud_project: nexum-dev
   no_proxy: "*"
-  dataset_output_env: "$(git rev-parse --abbrev-ref HEAD)"
+  dataset_output_env: $(git rev-parse --abbrev-ref HEAD)
   inttest_dset: integration_test
