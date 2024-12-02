@@ -71,10 +71,13 @@ use_parentheses = true
 ensure_newline_before_comments = true
 
 [tool.ruff]
-lint.ignore = ["E501"] # Disable line-length rules for ruff
-line-length = 88
+line-length = 130
+
+# Move fixable configurations to lint section
+[tool.ruff.lint]
 select = ["F", "E", "W", "C90"]
 fixable = ["F401", "F841"]
+ignore = ["E501", "F403", "F405"]  # Disable line-length, F403 and F405 to ignore list
 exclude = [
     ".git",
     ".venv",

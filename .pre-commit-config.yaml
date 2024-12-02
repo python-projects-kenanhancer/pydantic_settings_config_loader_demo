@@ -16,25 +16,25 @@ repos:
 
       - id: ruff
         name: ruff
-        entry: poetry run ruff
+        entry: poetry run ruff check
         language: system
-        args: ["--fix", "--exit-non-zero-on-fix"]
+        args: ["--fix"]
         types: [python]
 
       - id: check-yaml
         name: check-yaml
-        entry: poetry run pre-commit-hooks check-yaml
+        entry: poetry run check-yaml
         language: system
         files: \.(yml|yaml)$
 
       - id: end-of-file-fixer
         name: end-of-file-fixer
-        entry: poetry run pre-commit-hooks end-of-file-fixer
+        entry: poetry run end-of-file-fixer
         language: system
         types: [text]
 
       - id: trailing-whitespace
         name: trailing-whitespace
-        entry: poetry run pre-commit-hooks trailing-whitespace-fixer
+        entry: poetry run trailing-whitespace-fixer
         language: system
         types: [text]

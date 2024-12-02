@@ -12,7 +12,7 @@ Before setting up this project, ensure the following programs are installed:
 
 ### Homebrew
 
-Homebrew is a package manager for macOS, used to install other tools like `asdf` and `jq`.  
+Homebrew is a package manager for macOS, used to install other tools like `asdf` and `jq`.
 Installation:
 
 ```bash
