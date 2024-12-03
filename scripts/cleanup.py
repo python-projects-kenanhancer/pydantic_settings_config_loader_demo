@@ -85,6 +85,7 @@ def cleanup() -> None:
     # Define paths to clean
     paths_to_remove: List[Path] = [
         project_root / ".pytest_cache",
+        project_root / ".ruff_cache",
         project_root / ".mypy_cache",
         project_root / "build",
         project_root / "dist",
