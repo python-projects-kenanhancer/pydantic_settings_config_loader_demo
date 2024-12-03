@@ -106,26 +106,34 @@ This will create or overwrite the .vscode/extensions.json file with a list of cu
 
 1. Clone the Repository:
 
-    ```bash
-    git clone <repository-url>
-    cd pydantic_settings_config_loader_demo
-    ```
+   ```bash
+   git clone <repository-url>
+   cd pydantic_settings_config_loader_demo
+   ```
 
 1. Install Dependencies:
 
-    ```bash
-    poetry install
-    poetry run pre-commit install --overwrite
-    ```
+   ```bash
+   poetry install
+   poetry run pre-commit install --overwrite
+   ```
 
-    or
+   or
 
-    ```bash
-    poetry run setup
-    ```
+   ```bash
+   poetry run setup
+   ```
 
 1. Run Tests: Run the tests using pytest:
 
-    ```bash
-    poetry run pytest
-    ```
+   ```bash
+   poetry run pytest
+   ```
+
+## Running Pre-commit hooks
+
+This command executes all the pre-commit hooks defined in your .pre-commit-config.yaml file on all files in your repository, regardless of whether they have been modified or staged for commit. It ensures that your entire codebase adheres to the standards and checks specified by your pre-commit hooks.
+
+```bash
+poetry run pre-commit run --all-files
+```

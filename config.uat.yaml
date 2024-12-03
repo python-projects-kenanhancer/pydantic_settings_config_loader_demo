@@ -7,7 +7,7 @@ feature_flags:
   circuit_breaker_checks_subset_config: { first_name: Ricardo }
   circuit_breaker_duration: 11
 
-# # Meta-Database Settings
+# Meta-Database Settings
 meta_database:
   postgres_user: airflow
   postgres_password: airflow
