@@ -136,4 +136,18 @@ This command executes all the pre-commit hooks defined in your .pre-commit-confi
 
 ```bash
 poetry run pre-commit run --all-files
+
+or
+
+poetry run pre-commit run --all-files --verbose
+```
+
+### Additional Command Options
+
+```bash
+poetry run pre-commit run black --all-files
+
+poetry run pre-commit run pretty-format-json --all-files
+
+poetry run pre-commit run pretty-format-json --files config.json
 ```
