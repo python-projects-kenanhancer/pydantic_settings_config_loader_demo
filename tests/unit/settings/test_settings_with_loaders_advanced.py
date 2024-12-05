@@ -1,10 +1,19 @@
+from dataclasses import dataclass
+
 import pytest
 
-from config_loaders import ConfigLoaderFactory, YamlLoaderArgs
+from config_loaders import ConfigLoaderFactory, EnvLoaderArgs, JsonLoaderArgs, YamlLoaderArgs
 from schemas import Settings
 
 
-class TestSettingsWithYamlLoaderAdvanced:
+@dataclass
+class UnifiedSettings:
+    env: Settings | None = None
+    json: Settings | None = None
+    yaml: Settings | None = None
+
+
+class TestSettingsWithLoadersAdvanced:
 
     @pytest.fixture
     def env_suffix(self, request):
@@ -13,13 +22,28 @@ class TestSettingsWithYamlLoaderAdvanced:
     @pytest.fixture
     def settings(self, env_suffix):
 
+        unified_settings = UnifiedSettings()
+
         if env_suffix:
             env_suffix = env_suffix.lower()
-            env_file = f"config.{env_suffix}.yaml"
-        else:
-            env_file = "config.yaml"
+            env_file = f".env.{env_suffix}"
+            json_file = f"config.{env_suffix}.json"
+            yaml_file = f"config.{env_suffix}.yaml"
 
-        return Settings.load(ConfigLoaderFactory.get_loader(YamlLoaderArgs(file_path=env_file)))
+        else:
+            env_file = ".env"
+            json_file = "config.json"
+            yaml_file = "config.yaml"
+
+        settings_from_env_file = Settings.load(ConfigLoaderFactory.get_loader(EnvLoaderArgs(file_path=env_file)))
+        settings_from_json_file = Settings.load(ConfigLoaderFactory.get_loader(JsonLoaderArgs(file_path=json_file)))
+        settings_from_yaml_file = Settings.load(ConfigLoaderFactory.get_loader(YamlLoaderArgs(file_path=yaml_file)))
+
+        unified_settings.env = settings_from_env_file
+        unified_settings.json = settings_from_json_file
+        unified_settings.yaml = settings_from_yaml_file
+
+        return unified_settings
 
     @pytest.fixture
     def expected_settings(self, env_suffix):
@@ -54,9 +78,13 @@ class TestSettingsWithYamlLoaderAdvanced:
         ],
         indirect=["env_suffix"],  # Resolve via the env_suffix fixture
     )
-    def test_settings_with_different_environments(self, settings, expected_settings):
+    def test_settings_with_different_environments(self, settings: UnifiedSettings, expected_settings):
 
         for section, fields in expected_settings.items():
             for field, expected_value in fields.items():
-                actual_value = getattr(getattr(settings, section), field)
-                assert actual_value == expected_value
+                actual_env_value = getattr(getattr(settings.env, section), field)
+                actual_json_value = getattr(getattr(settings.json, section), field)
+                actual_yaml_value = getattr(getattr(settings.yaml, section), field)
+                assert actual_env_value == expected_value
+                assert actual_json_value == expected_value
+                assert actual_yaml_value == expected_value
