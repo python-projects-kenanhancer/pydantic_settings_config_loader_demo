@@ -25,11 +25,13 @@ isort = "^5.13.2"
 pre-commit = "^4.0.1"
 ruff = "^0.8.1"
 pre-commit-hooks = "^5.0.0"
+pytest-xdist = "^3.6.1"
 
 [tool.pytest.ini_options]
 pythonpath = ["./src"]
 testpaths = ["tests"]
 norecursedirs = [".venv", ".pytest_cache", "__pycache__", ".vscode"]
+addopts = "-n 4"
 # env = []
 
 [build-system]
