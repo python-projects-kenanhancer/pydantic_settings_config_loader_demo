@@ -1,5 +1,5 @@
 from abc import ABC
 
 
-class LoaderArgs(ABC):
+class ConfigLoaderArgs(ABC):
     pass

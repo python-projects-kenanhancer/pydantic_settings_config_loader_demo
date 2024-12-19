@@ -1,21 +1,21 @@
 from .config_loader import ConfigLoader
+from .config_loader_args import *
 from .config_loader_factory import ConfigLoaderFactory
-from .config_loader_factory_v2 import ConfigLoaderFactoryV2
+from .config_loader_factory_registry import ConfigLoaderFactoryRegistry
 from .config_providers import *
-from .env_loader import EnvLoader
-from .env_processors import *
-from .json_loader import JsonLoader
-from .loader_args import *
-from .yaml_loader import YamlLoader
+from .env_config_loader import EnvConfigLoader
+from .env_config_processors import *
+from .json_config_loader import JsonConfigLoader
+from .yaml_config_loader import YamlConfigLoader
 
 __all__ = [
     "ConfigLoader",
     "ConfigLoaderFactory",
-    "ConfigLoaderFactoryV2",
-    "JsonLoader",
-    "YamlLoader",
-    "EnvLoader",
+    "ConfigLoaderFactoryRegistry",
+    "JsonConfigLoader",
+    "YamlConfigLoader",
+    "EnvConfigLoader",
 ]
 __all__.extend(config_providers.__all__)
-__all__.extend(env_processors.__all__)
-__all__.extend(loader_args.__all__)
+__all__.extend(env_config_processors.__all__)
+__all__.extend(config_loader_args.__all__)

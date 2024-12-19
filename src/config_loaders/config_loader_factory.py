@@ -1,69 +1,113 @@
 from typing import overload
 
-from config_loaders.loader_args import (
-    EnvLoaderArgs,
-    GcpLoaderEnvArgs,
-    GcpLoaderJsonArgs,
-    GcpLoaderYamlArgs,
-    JsonLoaderArgs,
-    LoaderArgs,
-    YamlLoaderArgs,
+from config_loaders.config_loader_args import (
+    ConfigLoaderArgs,
+    EnvConfigLoaderArgs,
+    GcpSecretEnvConfigLoaderArgs,
+    GcpSecretJsonConfigLoaderArgs,
+    GcpSecretYamlConfigLoaderArgs,
+    JsonConfigLoaderArgs,
+    YamlConfigLoaderArgs,
 )
+from config_loaders.config_loader_args.gcp_storage_env_config_loader_args import GcpStorageEnvConfigLoaderArgs
+from config_loaders.config_loader_args.gcp_storage_json_config_loader_args import GcpStorageJsonConfigLoaderArgs
+from config_loaders.config_loader_args.gcp_storage_yaml_config_loader_args import GcpStorageYamlConfigLoaderArgs
+from config_loaders.config_providers.gcp_storage_config_provider import GcpStorageConfigProvider
 
 from .config_loader import ConfigLoader
 from .config_providers import FileConfigProvider, GcpSecretConfigProvider
-from .env_loader import EnvLoader
-from .env_processors import DefaultEnvProcessor
-from .json_loader import JsonLoader
-from .yaml_loader import YamlLoader
+from .env_config_loader import EnvConfigLoader
+from .env_config_processors import DefaultEnvConfigProcessor
+from .json_config_loader import JsonConfigLoader
+from .yaml_config_loader import YamlConfigLoader
 
 
 class ConfigLoaderFactory:
     @overload
     @staticmethod
-    def get_loader(args: GcpLoaderEnvArgs) -> EnvLoader: ...
+    def get_loader(config_loader_args: GcpSecretEnvConfigLoaderArgs) -> EnvConfigLoader: ...
 
     @overload
     @staticmethod
-    def get_loader(args: GcpLoaderJsonArgs) -> JsonLoader: ...
+    def get_loader(config_loader_args: GcpSecretJsonConfigLoaderArgs) -> JsonConfigLoader: ...
 
     @overload
     @staticmethod
-    def get_loader(args: GcpLoaderYamlArgs) -> YamlLoader: ...
+    def get_loader(config_loader_args: GcpSecretYamlConfigLoaderArgs) -> YamlConfigLoader: ...
 
     @overload
     @staticmethod
-    def get_loader(args: EnvLoaderArgs) -> EnvLoader: ...
+    def get_loader(config_loader_args: GcpStorageEnvConfigLoaderArgs) -> EnvConfigLoader: ...
 
     @overload
     @staticmethod
-    def get_loader(args: JsonLoaderArgs) -> JsonLoader: ...
+    def get_loader(config_loader_args: GcpStorageJsonConfigLoaderArgs) -> JsonConfigLoader: ...
 
     @overload
     @staticmethod
-    def get_loader(args: YamlLoaderArgs) -> YamlLoader: ...
+    def get_loader(config_loader_args: GcpStorageYamlConfigLoaderArgs) -> YamlConfigLoader: ...
+
+    @overload
+    @staticmethod
+    def get_loader(config_loader_args: EnvConfigLoaderArgs) -> EnvConfigLoader: ...
+
+    @overload
+    @staticmethod
+    def get_loader(config_loader_args: JsonConfigLoaderArgs) -> JsonConfigLoader: ...
+
+    @overload
+    @staticmethod
+    def get_loader(config_loader_args: YamlConfigLoaderArgs) -> YamlConfigLoader: ...
 
     @staticmethod
-    def get_loader(args: LoaderArgs) -> ConfigLoader:
-        if isinstance(args, GcpLoaderEnvArgs):
-            config_provider = GcpSecretConfigProvider(secret_name=args.secret_name, project_id=args.project_id)
-            env_processor = DefaultEnvProcessor()
-            return EnvLoader(config_provider=config_provider, env_processor=env_processor)
-        elif isinstance(args, GcpLoaderJsonArgs):
-            config_provider = GcpSecretConfigProvider(secret_name=args.secret_name, project_id=args.project_id)
-            return JsonLoader(config_provider=config_provider)
-        elif isinstance(args, GcpLoaderYamlArgs):
-            config_provider = GcpSecretConfigProvider(secret_name=args.secret_name, project_id=args.project_id)
-            return YamlLoader(config_provider=config_provider)
-        elif isinstance(args, EnvLoaderArgs):
-            config_provider = FileConfigProvider(file_path=args.file_path)
-            env_processor = DefaultEnvProcessor()
-            return EnvLoader(config_provider=config_provider, env_processor=env_processor)
-        elif isinstance(args, JsonLoaderArgs):
-            config_provider = FileConfigProvider(file_path=args.file_path)
-            return JsonLoader(config_provider=config_provider)
-        elif isinstance(args, YamlLoaderArgs):
-            config_provider = FileConfigProvider(file_path=args.file_path)
-            return YamlLoader(config_provider=config_provider)
+    def get_loader(config_loader_args: ConfigLoaderArgs) -> ConfigLoader:
+        if isinstance(config_loader_args, GcpSecretEnvConfigLoaderArgs):
+            config_provider = GcpSecretConfigProvider(
+                secret_name=config_loader_args.secret_name, project_id=config_loader_args.project_id
+            )
+            env_processor = DefaultEnvConfigProcessor()
+            return EnvConfigLoader(config_provider=config_provider, env_processor=env_processor)
+        elif isinstance(config_loader_args, GcpSecretJsonConfigLoaderArgs):
+            config_provider = GcpSecretConfigProvider(
+                secret_name=config_loader_args.secret_name, project_id=config_loader_args.project_id
+            )
+            return JsonConfigLoader(config_provider=config_provider)
+        elif isinstance(config_loader_args, GcpSecretYamlConfigLoaderArgs):
+            config_provider = GcpSecretConfigProvider(
+                secret_name=config_loader_args.secret_name, project_id=config_loader_args.project_id
+            )
+            return YamlConfigLoader(config_provider=config_provider)
+        elif isinstance(config_loader_args, GcpStorageEnvConfigLoaderArgs):
+            config_provider = GcpStorageConfigProvider(
+                bucket_name=config_loader_args.bucket_name,
+                blob_name=config_loader_args.blob_name,
+                project_id=config_loader_args.project_id,
+            )
+            env_processor = DefaultEnvConfigProcessor()
+            return EnvConfigLoader(config_provider=config_provider, env_processor=env_processor)
+        elif isinstance(config_loader_args, GcpStorageJsonConfigLoaderArgs):
+            config_provider = GcpStorageConfigProvider(
+                bucket_name=config_loader_args.bucket_name,
+                blob_name=config_loader_args.blob_name,
+                project_id=config_loader_args.project_id,
+            )
+            return JsonConfigLoader(config_provider=config_provider)
+        elif isinstance(config_loader_args, GcpStorageYamlConfigLoaderArgs):
+            config_provider = GcpStorageConfigProvider(
+                bucket_name=config_loader_args.bucket_name,
+                blob_name=config_loader_args.blob_name,
+                project_id=config_loader_args.project_id,
+            )
+            return YamlConfigLoader(config_provider=config_provider)
+        elif isinstance(config_loader_args, EnvConfigLoaderArgs):
+            config_provider = FileConfigProvider(file_path=config_loader_args.file_path)
+            env_processor = DefaultEnvConfigProcessor()
+            return EnvConfigLoader(config_provider=config_provider, env_processor=env_processor)
+        elif isinstance(config_loader_args, JsonConfigLoaderArgs):
+            config_provider = FileConfigProvider(file_path=config_loader_args.file_path)
+            return JsonConfigLoader(config_provider=config_provider)
+        elif isinstance(config_loader_args, YamlConfigLoaderArgs):
+            config_provider = FileConfigProvider(file_path=config_loader_args.file_path)
+            return YamlConfigLoader(config_provider=config_provider)
         else:
-            raise ValueError(f"Unsupported loader arguments: {args}")
+            raise ValueError(f"Unsupported loader arguments: {config_loader_args}")

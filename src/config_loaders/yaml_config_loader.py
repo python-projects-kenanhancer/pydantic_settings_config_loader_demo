@@ -7,7 +7,7 @@ from .config_loader import ConfigLoader
 from .config_providers import ConfigProvider
 
 
-class YamlLoader(ConfigLoader):
+class YamlConfigLoader(ConfigLoader):
     """
     Loads configuration from a YAML source provided by a ConfigProvider.
     """

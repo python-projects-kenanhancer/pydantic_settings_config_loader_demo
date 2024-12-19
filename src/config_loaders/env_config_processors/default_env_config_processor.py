@@ -2,10 +2,10 @@ import json
 import logging
 from typing import Any
 
-from .env_processor import EnvProcessor
+from .env_config_processor import EnvConfigProcessor
 
 
-class DefaultEnvProcessor(EnvProcessor):
+class DefaultEnvConfigProcessor(EnvConfigProcessor):
     """
     Processes flat environment dictionaries into nested dictionaries with JSON fields parsed.
     """

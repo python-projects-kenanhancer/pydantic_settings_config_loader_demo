@@ -2,17 +2,17 @@ import logging
 from typing import Any, Callable, Dict, Optional, Type, TypeVar
 
 from .config_loader import ConfigLoader
-from .loader_args import LoaderArgs
+from .config_loader_args import ConfigLoaderArgs
 
-T = TypeVar("T", bound="LoaderArgs")
+T = TypeVar("T", bound="ConfigLoaderArgs")
 
 
-class ConfigLoaderFactoryV2:
+class ConfigLoaderFactoryRegistry:
     """
     A hybrid factory class for creating configuration loaders.
     """
 
-    _default_instance: Optional["ConfigLoaderFactoryV2"] = None
+    _default_instance: Optional["ConfigLoaderFactoryRegistry"] = None
 
     def __init__(self):
         """
@@ -23,7 +23,7 @@ class ConfigLoaderFactoryV2:
         self.logger.info("ConfigLoaderFactory initialized with an empty registry.")
 
     @classmethod
-    def default(cls) -> "ConfigLoaderFactoryV2":
+    def default(cls) -> "ConfigLoaderFactoryRegistry":
         """
         Retrieve the default factory instance, creating it if necessary.
         """
@@ -43,7 +43,7 @@ class ConfigLoaderFactoryV2:
         self._loader_registry[args_type] = constructor
         self.logger.info(f"Registered loader for args type: {args_type}")
 
-    def get_loader(self, args: LoaderArgs) -> ConfigLoader:
+    def get_loader(self, args: ConfigLoaderArgs) -> ConfigLoader:
         """
         Create a loader based on the provided arguments.
 

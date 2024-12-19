@@ -6,7 +6,7 @@ from .config_loader import ConfigLoader
 from .config_providers import ConfigProvider
 
 
-class JsonLoader(ConfigLoader):
+class JsonConfigLoader(ConfigLoader):
     """
     Loads configuration from a JSON source provided by a ConfigProvider.
     """

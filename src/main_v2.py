@@ -2,20 +2,23 @@ import logging
 from typing import TypedDict
 
 from config_loaders import (
-    ConfigLoaderFactoryV2,
-    DefaultEnvProcessor,
-    EnvLoader,
-    EnvLoaderArgs,
+    ConfigLoaderArgs,
+    ConfigLoaderFactoryRegistry,
+    DefaultEnvConfigProcessor,
+    EnvConfigLoader,
+    EnvConfigLoaderArgs,
     FileConfigProvider,
-    GcpLoaderEnvArgs,
-    GcpLoaderJsonArgs,
-    GcpLoaderYamlArgs,
     GcpSecretConfigProvider,
-    JsonLoader,
-    JsonLoaderArgs,
-    LoaderArgs,
-    YamlLoader,
-    YamlLoaderArgs,
+    GcpSecretEnvConfigLoaderArgs,
+    GcpSecretJsonConfigLoaderArgs,
+    GcpSecretYamlConfigLoaderArgs,
+    GcpStorageEnvConfigLoaderArgs,
+    GcpStorageJsonConfigLoaderArgs,
+    GcpStorageYamlConfigLoaderArgs,
+    JsonConfigLoader,
+    JsonConfigLoaderArgs,
+    YamlConfigLoader,
+    YamlConfigLoaderArgs,
 )
 from schemas import Settings
 
@@ -34,52 +37,52 @@ def configure_logging():
     )
 
 
-def register_loaders(factory: ConfigLoaderFactoryV2) -> None:
+def register_loaders(factory: ConfigLoaderFactoryRegistry) -> None:
     """
     Register all necessary loaders with the factory.
     """
     factory.register(
-        GcpLoaderEnvArgs,
-        lambda args: EnvLoader(
+        GcpSecretEnvConfigLoaderArgs,
+        lambda args: EnvConfigLoader(
             config_provider=GcpSecretConfigProvider(secret_name=args.secret_name, project_id=args.project_id),
-            env_processor=DefaultEnvProcessor(),
+            env_processor=DefaultEnvConfigProcessor(),
         ),
     )
 
     factory.register(
-        GcpLoaderJsonArgs,
-        lambda args: JsonLoader(
+        GcpSecretJsonConfigLoaderArgs,
+        lambda args: JsonConfigLoader(
             config_provider=GcpSecretConfigProvider(secret_name=args.secret_name, project_id=args.project_id)
         ),
     )
 
     factory.register(
-        GcpLoaderYamlArgs,
-        lambda args: YamlLoader(
+        GcpSecretYamlConfigLoaderArgs,
+        lambda args: YamlConfigLoader(
             config_provider=GcpSecretConfigProvider(secret_name=args.secret_name, project_id=args.project_id)
         ),
     )
 
     factory.register(
-        EnvLoaderArgs,
-        lambda args: EnvLoader(
+        EnvConfigLoaderArgs,
+        lambda args: EnvConfigLoader(
             config_provider=FileConfigProvider(file_path=args.file_path),
-            env_processor=DefaultEnvProcessor(),
+            env_processor=DefaultEnvConfigProcessor(),
         ),
     )
 
     factory.register(
-        JsonLoaderArgs,
-        lambda args: JsonLoader(config_provider=FileConfigProvider(file_path=args.file_path)),
+        JsonConfigLoaderArgs,
+        lambda args: JsonConfigLoader(config_provider=FileConfigProvider(file_path=args.file_path)),
     )
 
     factory.register(
-        YamlLoaderArgs,
-        lambda args: YamlLoader(config_provider=FileConfigProvider(file_path=args.file_path)),
+        YamlConfigLoaderArgs,
+        lambda args: YamlConfigLoader(config_provider=FileConfigProvider(file_path=args.file_path)),
     )
 
 
-def load_settings(factory: ConfigLoaderFactoryV2, args, logger: logging.Logger) -> Settings:
+def load_settings(factory: ConfigLoaderFactoryRegistry, args, logger: logging.Logger) -> Settings:
     """
     Generic function to load settings based on provided arguments.
     """
@@ -90,7 +93,7 @@ def load_settings(factory: ConfigLoaderFactoryV2, args, logger: logging.Logger) 
 
 
 class SettingsSource(TypedDict):
-    args: LoaderArgs  # The argument instance, e.g., GcpLoaderEnvArgs, EnvLoaderArgs
+    args: ConfigLoaderArgs  # The argument instance, e.g., GcpSecretEnvConfigLoaderArgs, EnvConfigLoaderArgs
     description: str
 
 
@@ -102,30 +105,42 @@ def main():
     project_id = "nexum-dev-364711"
 
     # Initialize factory and register loaders
-    factory = ConfigLoaderFactoryV2.default()
+    factory = ConfigLoaderFactoryRegistry.default()
 
     register_loaders(factory)
 
     # Load settings from various sources
     settings_sources: list[SettingsSource] = [
         {
-            "args": GcpLoaderEnvArgs(secret_name="app-config-env", project_id=project_id),
+            "args": GcpSecretEnvConfigLoaderArgs(secret_name="app-config-env", project_id=project_id),
             "description": "GCP Env Secret: app-config-env",
         },
         {
-            "args": GcpLoaderJsonArgs(secret_name="app-config-json", project_id=project_id),
+            "args": GcpSecretJsonConfigLoaderArgs(secret_name="app-config-json", project_id=project_id),
             "description": "GCP JSON Secret: app-config-json",
         },
         {
-            "args": GcpLoaderYamlArgs(secret_name="app-config-yaml", project_id=project_id),
+            "args": GcpSecretYamlConfigLoaderArgs(secret_name="app-config-yaml", project_id=project_id),
             "description": "GCP YAML Secret: app-config-yaml",
         },
-        {"args": EnvLoaderArgs(file_path=".env"), "description": "ENV File: .env"},
-        {"args": EnvLoaderArgs(file_path=".env.local"), "description": "ENV File: .env.local"},
-        {"args": YamlLoaderArgs(file_path="config.yaml"), "description": "YAML File: config.yaml"},
-        {"args": YamlLoaderArgs(file_path="config.local.yaml"), "description": "YAML File: config.local.yaml"},
-        {"args": JsonLoaderArgs(file_path="config.json"), "description": "JSON File: config.json"},
-        {"args": JsonLoaderArgs(file_path="config.local.json"), "description": "JSON File: config.local.json"},
+        {
+            "args": GcpStorageEnvConfigLoaderArgs(bucket_name="app-config-env", blob_name=".env", project_id=project_id),
+            "description": "GCP Env Storage: app-config-env",
+        },
+        {
+            "args": GcpStorageJsonConfigLoaderArgs(bucket_name="app-config-json", blob_name="config.json", project_id=project_id),
+            "description": "GCP JSON Storage: app-config-json",
+        },
+        {
+            "args": GcpStorageYamlConfigLoaderArgs(bucket_name="app-config-yaml", blob_name="config.yaml", project_id=project_id),
+            "description": "GCP YAML Storage: app-config-yaml",
+        },
+        {"args": EnvConfigLoaderArgs(file_path=".env"), "description": "ENV File: .env"},
+        {"args": EnvConfigLoaderArgs(file_path=".env.local"), "description": "ENV File: .env.local"},
+        {"args": YamlConfigLoaderArgs(file_path="config.yaml"), "description": "YAML File: config.yaml"},
+        {"args": YamlConfigLoaderArgs(file_path="config.local.yaml"), "description": "YAML File: config.local.yaml"},
+        {"args": JsonConfigLoaderArgs(file_path="config.json"), "description": "JSON File: config.json"},
+        {"args": JsonConfigLoaderArgs(file_path="config.local.json"), "description": "JSON File: config.local.json"},
     ]
 
     for settings_source in settings_sources:

@@ -26,11 +26,13 @@ class GcpSecretConfigProvider(ConfigProvider):
             # secret_path = f"projects/{self.project_id}/secrets/{self.secret_name}/versions/latest"
             secret_path = client.secret_version_path(self.project_id, self.secret_name, "latest")
             response = client.access_secret_version(name=secret_path)  # type: ignore
-            self.logger.info(f"Successfully fetched secret: {self.secret_name}")
+            self.logger.info(f"Successfully fetched secret from: {self.secret_name}")
             return response.payload.data.decode("UTF-8")
         except DefaultCredentialsError as e:
-            self.logger.error(f"Error loading credentials: {e}")
+            self.logger.error(f"Error loading credentials for project '{self.project_id}': {e}")
             return None
         except Exception:
-            self.logger.exception(f"An unexpected error occurred while fetching secret: {self.secret_name}")
+            self.logger.exception(
+                f"An unexpected error occurred while fetching secret: {self.secret_name} (Project: {self.project_id})"
+            )
             return None

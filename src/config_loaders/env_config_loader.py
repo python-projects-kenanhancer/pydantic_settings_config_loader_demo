@@ -6,19 +6,19 @@ from dotenv import dotenv_values
 
 from .config_loader import ConfigLoader
 from .config_providers.config_provider import ConfigProvider
-from .env_processors import EnvProcessor
+from .env_config_processors import EnvConfigProcessor
 
 
-class EnvLoader(ConfigLoader):
+class EnvConfigLoader(ConfigLoader):
     """
-    Loads and processes environment variables provided by a ConfigProvider using an EnvProcessor.
+    Loads and processes environment variables provided by a ConfigProvider using an EnvConfigProcessor.
     """
 
-    def __init__(self, config_provider: ConfigProvider, env_processor: EnvProcessor):
+    def __init__(self, config_provider: ConfigProvider, env_processor: EnvConfigProcessor):
         """
         Initialize the EnvLoader with a configuration provider and environment processor.
         :param config_provider: Instance of ConfigProvider to fetch environment configuration content.
-        :param env_processor: Instance of EnvProcessor to process environment variables.
+        :param env_processor: Instance of EnvConfigProcessor to process environment variables.
         """
         self.config_provider = config_provider
         self.env_processor = env_processor
@@ -76,7 +76,7 @@ class EnvLoader(ConfigLoader):
 
     def _process_env(self, raw_env: dict[str, Any]) -> dict[str, Any]:
         """
-        Process raw environment variables into a nested dictionary using the EnvProcessor.
+        Process raw environment variables into a nested dictionary using the EnvConfigProcessor.
 
         :param raw_env: Flat dictionary of raw environment variables.
         :return: Nested dictionary of processed environment variables.
