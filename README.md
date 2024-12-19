@@ -37,70 +37,76 @@ Installation:
 brew install asdf
 ```
 
-Add asdf to your shell by adding the following lines to your shell configuration (~/.zshrc or ~/.bashrc):
+- Add asdf to your shell by adding the following lines to your shell configuration (~/.zshrc or ~/.bashrc):
 
-For `~/.zshrc`:
+  For `~/.zshrc`:
 
-```bash
-echo '. $(brew --prefix asdf)/libexec/asdf.sh' >> ~/.zshrc
-```
+  ```bash
+  echo '. $(brew --prefix asdf)/libexec/asdf.sh' >> ~/.zshrc
+  ```
 
-For `~/.bashrc`:
+  For `~/.bashrc`:
 
-```bash
-echo '. $(brew --prefix asdf)/libexec/asdf.sh' >> ~/.bashrc
-```
+  ```bash
+  echo '. $(brew --prefix asdf)/libexec/asdf.sh' >> ~/.bashrc
+  ```
 
-After adding the line, reload the shell configuration file for the changes to take effect:
+- After adding the line, reload the shell configuration file for the changes to take effect:
 
-For `~/.zshrc`:
+  For `~/.zshrc`:
 
-```bash
-source ~/.zshrc
-```
+  ```bash
+  source ~/.zshrc
+  ```
 
-For `~/.bashrc`:
+  For `~/.bashrc`:
 
-```bash
-source ~/.bashrc
-```
+  ```bash
+  source ~/.bashrc
+  ```
 
 ### python
 
-Install the Python plugin and Python 3.11.8 using asdf:
+- Install the Python plugin and Python 3.12.7 using asdf:
 
-```bash
-asdf plugin add python
-asdf install python 3.11.8
-asdf global python 3.11.8
-```
+  ```bash
+  asdf plugin add python
+  asdf install python 3.12.7
+  asdf global python 3.12.7
+  ```
 
-Verify the installation:
+- Verify the installation:
 
-```bash
-python --version
-```
+  ```bash
+  python --version
+  ```
 
 ### poetry
 
-Poetry is a dependency and environment management tool for Python, designed to simplify the process of managing Python packages and virtual environments.
+- Poetry is a dependency and environment management tool for Python, designed to simplify the process of managing Python packages and virtual environments.
 
-```bash
-curl -sSL https://install.python-poetry.org | python3 -
-```
+  ```bash
+  curl -sSL https://install.python-poetry.org | python3 -
+  ```
 
 ### Automating VS Code Extensions Setup
 
-To ensure all team members use the same set of VS Code extensions, you can automate the generation of the .vscode/extensions.json file. This file contains recommendations for the extensions required for this project.
+- To ensure all team members use the same set of VS Code extensions, you can automate the generation of the .vscode/extensions.json file. This file contains recommendations for the extensions required for this project.
 
-Generate the extensions.json File
-Run the following command in the project directory:
+  Generate the extensions.json File
+  Run the following command in the project directory:
 
-```bash
-code --list-extensions | jq -R . | jq -s '{ "recommendations": . }' > .vscode/extensions.json
-```
+  ```bash
+  code --list-extensions | jq -R . | jq -s '{ "recommendations": . }' > .vscode/extensions.json
+  ```
 
-This will create or overwrite the .vscode/extensions.json file with a list of currently installed extensions, formatted for VS Code's recommendations.
+  This will create or overwrite the .vscode/extensions.json file with a list of currently installed extensions, formatted for VS Code's recommendations.
+
+- Install VSCode Default Extensions programatically.
+
+  ```bash
+  cat .vscode/extensions.json | jq -r '.recommendations[]' | xargs -n 1 code --install-extension
+  ```
 
 ## Setting Up the Project
 
@@ -108,7 +114,7 @@ This will create or overwrite the .vscode/extensions.json file with a list of cu
 
    ```bash
    git clone <repository-url>
-   cd pydantic_settings_config_loader_demo
+   cd ovo_gcp_cloud_function_boilerplate
    ```
 
 1. Install Dependencies:
@@ -132,22 +138,22 @@ This will create or overwrite the .vscode/extensions.json file with a list of cu
 
 ## Running Pre-commit hooks
 
-This command executes all the pre-commit hooks defined in your .pre-commit-config.yaml file on all files in your repository, regardless of whether they have been modified or staged for commit. It ensures that your entire codebase adheres to the standards and checks specified by your pre-commit hooks.
+- This command executes all the pre-commit hooks defined in your .pre-commit-config.yaml file on all files in your repository, regardless of whether they have been modified or staged for commit. It ensures that your entire codebase adheres to the standards and checks specified by your pre-commit hooks.
 
-```bash
-poetry run pre-commit run --all-files
+  ```bash
+  poetry run pre-commit run --all-files
 
-or
+  or
 
-poetry run pre-commit run --all-files --verbose
-```
+  poetry run pre-commit run --all-files --verbose
+  ```
 
-### Additional Command Options
+- Additional Command Options
 
-```bash
-poetry run pre-commit run black --all-files
+  ```bash
+  poetry run pre-commit run black --all-files
 
-poetry run pre-commit run pretty-format-json --all-files
+  poetry run pre-commit run pretty-format-json --all-files
 
-poetry run pre-commit run pretty-format-json --files config.json
-```
+  poetry run pre-commit run pretty-format-json --files config.json
+  ```
