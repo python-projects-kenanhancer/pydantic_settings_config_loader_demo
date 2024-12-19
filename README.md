@@ -13,6 +13,7 @@ Before setting up this project, ensure the following programs are installed:
 ### Homebrew
 
 Homebrew is a package manager for macOS, used to install other tools like `asdf` and `jq`.
+
 Installation:
 
 ```bash
@@ -22,6 +23,7 @@ Installation:
 ### jq
 
 jq is a lightweight and flexible command-line JSON processor, used for automating JSON file generation.
+
 Installation:
 
 ```bash
@@ -31,6 +33,7 @@ brew install jq
 ### asdf
 
 asdf is a version manager for multiple runtimes like Python, Node.js, Java, Go, etc.
+
 Installation:
 
 ```bash
@@ -87,6 +90,36 @@ brew install asdf
 
   ```bash
   curl -sSL https://install.python-poetry.org | python3 -
+  ```
+
+### Google Cloud CLI
+
+- Install Google Cloud CLI running the following commands. Find more details in [gcloud CLI](https://cloud.google.com/sdk/docs/install)
+
+  ```bash
+  curl https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-darwin-arm.tar.gz -o GCLOUDCLI.tar.gz
+
+  tar -xvf GCLOUDCLI.tar.gz
+
+  ./google-cloud-sdk/install.sh
+  ```
+
+- To initialize the gcloud CLI, run gcloud init:
+
+  ```bash
+  ./google-cloud-sdk/bin/gcloud init
+  ```
+
+- Verify the installation:
+
+  ```bash
+  gcloud --version
+  ```
+
+- Update and install gcloud components with the following command:
+
+  ```bash
+  gcloud components update
   ```
 
 ### Automating VS Code Extensions Setup
