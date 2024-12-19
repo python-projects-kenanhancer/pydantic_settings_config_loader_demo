@@ -1,4 +1,4 @@
-from .config_loader_args import ConfigLoaderArgs
+from ..config_loader_args import ConfigLoaderArgs
 
 
 class GcpSecretEnvConfigLoaderArgs(ConfigLoaderArgs):

@@ -6,16 +6,15 @@ from config_loaders.config_loader_args import (
     GcpSecretEnvConfigLoaderArgs,
     GcpSecretJsonConfigLoaderArgs,
     GcpSecretYamlConfigLoaderArgs,
+    GcpStorageEnvConfigLoaderArgs,
+    GcpStorageJsonConfigLoaderArgs,
+    GcpStorageYamlConfigLoaderArgs,
     JsonConfigLoaderArgs,
     YamlConfigLoaderArgs,
 )
-from config_loaders.config_loader_args.gcp_storage_env_config_loader_args import GcpStorageEnvConfigLoaderArgs
-from config_loaders.config_loader_args.gcp_storage_json_config_loader_args import GcpStorageJsonConfigLoaderArgs
-from config_loaders.config_loader_args.gcp_storage_yaml_config_loader_args import GcpStorageYamlConfigLoaderArgs
-from config_loaders.config_providers.gcp_storage_config_provider import GcpStorageConfigProvider
 
 from .config_loader import ConfigLoader
-from .config_providers import FileConfigProvider, GcpSecretConfigProvider
+from .config_providers import FileConfigProvider, GcpSecretConfigProvider, GcpStorageConfigProvider
 from .env_config_loader import EnvConfigLoader
 from .env_config_processors import DefaultEnvConfigProcessor
 from .json_config_loader import JsonConfigLoader
