@@ -12,6 +12,7 @@ from config_loaders import (
     GcpSecretEnvConfigLoaderArgs,
     GcpSecretJsonConfigLoaderArgs,
     GcpSecretYamlConfigLoaderArgs,
+    GcpStorageConfigProvider,
     GcpStorageEnvConfigLoaderArgs,
     GcpStorageJsonConfigLoaderArgs,
     GcpStorageYamlConfigLoaderArgs,
@@ -60,6 +61,34 @@ def register_loaders(factory: ConfigLoaderFactoryRegistry) -> None:
         GcpSecretYamlConfigLoaderArgs,
         lambda args: YamlConfigLoader(
             config_provider=GcpSecretConfigProvider(secret_name=args.secret_name, project_id=args.project_id)
+        ),
+    )
+
+    factory.register(
+        GcpStorageEnvConfigLoaderArgs,
+        lambda args: EnvConfigLoader(
+            config_provider=GcpStorageConfigProvider(
+                bucket_name=args.bucket_name, blob_name=args.blob_name, project_id=args.project_id
+            ),
+            env_processor=DefaultEnvConfigProcessor(),
+        ),
+    )
+
+    factory.register(
+        GcpStorageJsonConfigLoaderArgs,
+        lambda args: JsonConfigLoader(
+            config_provider=GcpStorageConfigProvider(
+                bucket_name=args.bucket_name, blob_name=args.blob_name, project_id=args.project_id
+            )
+        ),
+    )
+
+    factory.register(
+        GcpStorageYamlConfigLoaderArgs,
+        lambda args: YamlConfigLoader(
+            config_provider=GcpStorageConfigProvider(
+                bucket_name=args.bucket_name, blob_name=args.blob_name, project_id=args.project_id
+            )
         ),
     )
 
@@ -124,15 +153,19 @@ def main():
             "description": "GCP YAML Secret: app-config-yaml",
         },
         {
-            "args": GcpStorageEnvConfigLoaderArgs(bucket_name="app-config-env", blob_name=".env", project_id=project_id),
+            "args": GcpStorageEnvConfigLoaderArgs(bucket_name="app-config-boilerplate", blob_name=".env", project_id=project_id),
             "description": "GCP Env Storage: app-config-env",
         },
         {
-            "args": GcpStorageJsonConfigLoaderArgs(bucket_name="app-config-json", blob_name="config.json", project_id=project_id),
+            "args": GcpStorageJsonConfigLoaderArgs(
+                bucket_name="app-config-boilerplate", blob_name="config.json", project_id=project_id
+            ),
             "description": "GCP JSON Storage: app-config-json",
         },
         {
-            "args": GcpStorageYamlConfigLoaderArgs(bucket_name="app-config-yaml", blob_name="config.yaml", project_id=project_id),
+            "args": GcpStorageYamlConfigLoaderArgs(
+                bucket_name="app-config-boilerplate", blob_name="config.yaml", project_id=project_id
+            ),
             "description": "GCP YAML Storage: app-config-yaml",
         },
         {"args": EnvConfigLoaderArgs(file_path=".env"), "description": "ENV File: .env"},
