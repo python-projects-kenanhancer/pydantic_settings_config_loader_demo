@@ -58,6 +58,10 @@ class ConfigLoaderFactory:
     @staticmethod
     def get_loader(config_loader_args: YamlConfigLoaderArgs) -> YamlConfigLoader: ...
 
+    @overload
+    @staticmethod
+    def get_loader(config_loader_args: ConfigLoaderArgs) -> ConfigLoader: ...
+
     @staticmethod
     def get_loader(config_loader_args: ConfigLoaderArgs) -> ConfigLoader:
         if isinstance(config_loader_args, GcpSecretEnvConfigLoaderArgs):
