@@ -1,4 +1,4 @@
-from typing import Any, Callable, Type
+from typing import Type
 
 from config_loaders import ConfigLoaderFactory, GcpSecretYamlConfigLoaderArgs
 
@@ -12,7 +12,7 @@ def load_settings_from_gcp_secret_yaml(*, secret_name: str, project_id: str, Set
     return SettingsClass.load(config_loader=gcp_yaml_config_loader)
 
 
-def inject_settings_from_gcp_secret_yaml(
-    secret_name: str, project_id: str, SettingsClass: Type[TSettings]
-) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
-    return inject_settings(load_settings_from_gcp_secret_yaml, SettingsClass, secret_name=secret_name, project_id=project_id)
+def inject_settings_from_gcp_secret_yaml(secret_name: str, project_id: str, param_name: str = "settings"):
+    return inject_settings(
+        load_settings_from_gcp_secret_yaml, param_name=param_name, secret_name=secret_name, project_id=project_id
+    )

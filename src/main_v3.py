@@ -29,52 +29,50 @@ def configure_logging():
     )
 
 
-@inject_settings_from_env_file(file_path=".env", SettingsClass=Settings)
+@inject_settings_from_env_file(file_path=".env")
 def test_settings_from_env_file(logger: Logger, settings: Settings):
     logger.info(f"Settings from env file: {settings}")
 
 
-@inject_settings_from_json_file(file_path="config.json", SettingsClass=Settings)
+@inject_settings_from_json_file(file_path="config.json")
 def test_settings_from_json_file(logger: Logger, settings: Settings):
     logger.info(f"Settings from json file: {settings}")
 
 
-@inject_settings_from_yaml_file(file_path="config.yaml", SettingsClass=Settings)
+@inject_settings_from_yaml_file(file_path="config.yaml")
 def test_settings_from_yaml_file(logger: Logger, settings: Settings):
     logger.info(f"Settings from yaml file: {settings}")
 
 
-@inject_settings_from_gcp_secret_env(secret_name="app-config-env", project_id="nexum-dev-364711", SettingsClass=Settings)
+@inject_settings_from_gcp_secret_env(secret_name="app-config-env", project_id="nexum-dev-364711")
 def test_settings_from_gcp_secret_env(logger: Logger, settings: Settings):
     logger.info(f"Settings from gcp secret env file: {settings}")
 
 
-@inject_settings_from_gcp_secret_json(secret_name="app-config-json", project_id="nexum-dev-364711", SettingsClass=Settings)
+@inject_settings_from_gcp_secret_json(secret_name="app-config-json", project_id="nexum-dev-364711")
 def test_settings_from_gcp_secret_json(logger: Logger, settings: Settings):
     logger.info(f"Settings from gcp secret json file: {settings}")
 
 
-@inject_settings_from_gcp_secret_yaml(secret_name="app-config-yaml", project_id="nexum-dev-364711", SettingsClass=Settings)
+@inject_settings_from_gcp_secret_yaml(secret_name="app-config-yaml", project_id="nexum-dev-364711")
 def test_settings_from_gcp_secret_yaml(logger: Logger, settings: Settings):
     logger.info(f"Settings from gcp secret yaml file: {settings}")
 
 
-@inject_settings_from_gcp_storage_env(
-    bucket_name="app-config-boilerplate", blob_name=".env", project_id="nexum-dev-364711", SettingsClass=Settings
-)
+@inject_settings_from_gcp_storage_env(bucket_name="app-config-boilerplate", blob_name=".env", project_id="nexum-dev-364711")
 def test_settings_from_gcp_storage_env(logger: Logger, settings: Settings):
     logger.info(f"Settings from gcp storage env file: {settings}")
 
 
 @inject_settings_from_gcp_storage_json(
-    bucket_name="app-config-boilerplate", blob_name="config.json", project_id="nexum-dev-364711", SettingsClass=Settings
+    bucket_name="app-config-boilerplate", blob_name="config.json", project_id="nexum-dev-364711"
 )
 def test_settings_from_gcp_storage_json(logger: Logger, settings: Settings):
     logger.info(f"Settings from gcp storage json file: {settings}")
 
 
 @inject_settings_from_gcp_storage_yaml(
-    bucket_name="app-config-boilerplate", blob_name="config.yaml", project_id="nexum-dev-364711", SettingsClass=Settings
+    bucket_name="app-config-boilerplate", blob_name="config.yaml", project_id="nexum-dev-364711"
 )
 def test_settings_from_gcp_storage_yaml(logger: Logger, settings: Settings):
     logger.info(f"Settings from gcp storage yaml file: {settings}")

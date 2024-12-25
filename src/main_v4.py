@@ -30,61 +30,52 @@ def configure_logging():
     )
 
 
-@inject_settings_from_loader_args(EnvConfigLoaderArgs(file_path=".env"), SettingsClass=Settings)
+@inject_settings_from_loader_args(EnvConfigLoaderArgs(file_path=".env"))
 def test_settings_from_env_file(logger: Logger, settings: Settings):
     logger.info(f"Settings from env file: {settings}")
 
 
-@inject_settings_from_loader_args(JsonConfigLoaderArgs(file_path="config.json"), SettingsClass=Settings)
+@inject_settings_from_loader_args(JsonConfigLoaderArgs(file_path="config.json"))
 def test_settings_from_json_file(logger: Logger, settings: Settings):
     logger.info(f"Settings from json file: {settings}")
 
 
-@inject_settings_from_loader_args(YamlConfigLoaderArgs(file_path="config.yaml"), SettingsClass=Settings)
+@inject_settings_from_loader_args(YamlConfigLoaderArgs(file_path="config.yaml"))
 def test_settings_from_yaml_file(logger: Logger, settings: Settings):
     logger.info(f"Settings from yaml file: {settings}")
 
 
-@inject_settings_from_loader_args(
-    GcpSecretEnvConfigLoaderArgs(secret_name="app-config-env", project_id="nexum-dev-364711"), SettingsClass=Settings
-)
+@inject_settings_from_loader_args(GcpSecretEnvConfigLoaderArgs(secret_name="app-config-env", project_id="nexum-dev-364711"))
 def test_settings_from_gcp_secret_env(logger: Logger, settings: Settings):
     logger.info(f"Settings from gcp secret env file: {settings}")
 
 
-@inject_settings_from_loader_args(
-    GcpSecretJsonConfigLoaderArgs(secret_name="app-config-json", project_id="nexum-dev-364711"), SettingsClass=Settings
-)
+@inject_settings_from_loader_args(GcpSecretJsonConfigLoaderArgs(secret_name="app-config-json", project_id="nexum-dev-364711"))
 def test_settings_from_gcp_secret_json(logger: Logger, settings: Settings):
     logger.info(f"Settings from gcp secret json file: {settings}")
 
 
-@inject_settings_from_loader_args(
-    GcpSecretYamlConfigLoaderArgs(secret_name="app-config-yaml", project_id="nexum-dev-364711"), SettingsClass=Settings
-)
+@inject_settings_from_loader_args(GcpSecretYamlConfigLoaderArgs(secret_name="app-config-yaml", project_id="nexum-dev-364711"))
 def test_settings_from_gcp_secret_yaml(logger: Logger, settings: Settings):
     logger.info(f"Settings from gcp secret yaml file: {settings}")
 
 
 @inject_settings_from_loader_args(
-    GcpStorageEnvConfigLoaderArgs(bucket_name="app-config-boilerplate", blob_name=".env", project_id="nexum-dev-364711"),
-    SettingsClass=Settings,
+    GcpStorageEnvConfigLoaderArgs(bucket_name="app-config-boilerplate", blob_name=".env", project_id="nexum-dev-364711")
 )
 def test_settings_from_gcp_storage_env(logger: Logger, settings: Settings):
     logger.info(f"Settings from gcp storage env file: {settings}")
 
 
 @inject_settings_from_loader_args(
-    GcpStorageJsonConfigLoaderArgs(bucket_name="app-config-boilerplate", blob_name="config.json", project_id="nexum-dev-364711"),
-    SettingsClass=Settings,
+    GcpStorageJsonConfigLoaderArgs(bucket_name="app-config-boilerplate", blob_name="config.json", project_id="nexum-dev-364711")
 )
 def test_settings_from_gcp_storage_json(logger: Logger, settings: Settings):
     logger.info(f"Settings from gcp storage json file: {settings}")
 
 
 @inject_settings_from_loader_args(
-    GcpStorageYamlConfigLoaderArgs(bucket_name="app-config-boilerplate", blob_name="config.yaml", project_id="nexum-dev-364711"),
-    SettingsClass=Settings,
+    GcpStorageYamlConfigLoaderArgs(bucket_name="app-config-boilerplate", blob_name="config.yaml", project_id="nexum-dev-364711")
 )
 def test_settings_from_gcp_storage_yaml(logger: Logger, settings: Settings):
     logger.info(f"Settings from gcp storage yaml file: {settings}")

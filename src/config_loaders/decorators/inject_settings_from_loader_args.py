@@ -17,7 +17,7 @@ from config_loaders.config_loader_args import (
 from .base_inject_settings import TSettings, inject_settings
 
 
-def load_settings_from_env_file(*, config_loader_args: ConfigLoaderArgs, SettingsClass: Type[TSettings]):
+def load_settings_from_config_loader(*, config_loader_args: ConfigLoaderArgs, SettingsClass: Type[TSettings]):
     env_config_loader = ConfigLoaderFactory.get_loader(config_loader_args=config_loader_args)
 
     return SettingsClass.load(config_loader=env_config_loader)
@@ -25,59 +25,59 @@ def load_settings_from_env_file(*, config_loader_args: ConfigLoaderArgs, Setting
 
 @overload
 def inject_settings_from_loader_args(
-    config_loader_args: GcpSecretEnvConfigLoaderArgs, SettingsClass: Type[TSettings]
+    config_loader_args: GcpSecretEnvConfigLoaderArgs, param_name: str = "settings"
 ) -> Callable[[Callable[..., Any]], Callable[..., Any]]: ...
 
 
 @overload
 def inject_settings_from_loader_args(
-    config_loader_args: GcpSecretJsonConfigLoaderArgs, SettingsClass: Type[TSettings]
+    config_loader_args: GcpSecretJsonConfigLoaderArgs, param_name: str = "settings"
 ) -> Callable[[Callable[..., Any]], Callable[..., Any]]: ...
 
 
 @overload
 def inject_settings_from_loader_args(
-    config_loader_args: GcpSecretYamlConfigLoaderArgs, SettingsClass: Type[TSettings]
+    config_loader_args: GcpSecretYamlConfigLoaderArgs, param_name: str = "settings"
 ) -> Callable[[Callable[..., Any]], Callable[..., Any]]: ...
 
 
 @overload
 def inject_settings_from_loader_args(
-    config_loader_args: GcpStorageEnvConfigLoaderArgs, SettingsClass: Type[TSettings]
+    config_loader_args: GcpStorageEnvConfigLoaderArgs, param_name: str = "settings"
 ) -> Callable[[Callable[..., Any]], Callable[..., Any]]: ...
 
 
 @overload
 def inject_settings_from_loader_args(
-    config_loader_args: GcpStorageJsonConfigLoaderArgs, SettingsClass: Type[TSettings]
+    config_loader_args: GcpStorageJsonConfigLoaderArgs, param_name: str = "settings"
 ) -> Callable[[Callable[..., Any]], Callable[..., Any]]: ...
 
 
 @overload
 def inject_settings_from_loader_args(
-    config_loader_args: GcpStorageYamlConfigLoaderArgs, SettingsClass: Type[TSettings]
+    config_loader_args: GcpStorageYamlConfigLoaderArgs, param_name: str = "settings"
 ) -> Callable[[Callable[..., Any]], Callable[..., Any]]: ...
 
 
 @overload
 def inject_settings_from_loader_args(
-    config_loader_args: EnvConfigLoaderArgs, SettingsClass: Type[TSettings]
+    config_loader_args: EnvConfigLoaderArgs, param_name: str = "settings"
 ) -> Callable[[Callable[..., Any]], Callable[..., Any]]: ...
 
 
 @overload
 def inject_settings_from_loader_args(
-    config_loader_args: JsonConfigLoaderArgs, SettingsClass: Type[TSettings]
+    config_loader_args: JsonConfigLoaderArgs, param_name: str = "settings"
 ) -> Callable[[Callable[..., Any]], Callable[..., Any]]: ...
 
 
 @overload
 def inject_settings_from_loader_args(
-    config_loader_args: YamlConfigLoaderArgs, SettingsClass: Type[TSettings]
+    config_loader_args: YamlConfigLoaderArgs, param_name: str = "settings"
 ) -> Callable[[Callable[..., Any]], Callable[..., Any]]: ...
 
 
 def inject_settings_from_loader_args(
-    config_loader_args: ConfigLoaderArgs, SettingsClass: Type[TSettings]
+    config_loader_args: ConfigLoaderArgs, param_name: str = "settings"
 ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
-    return inject_settings(load_settings_from_env_file, SettingsClass, config_loader_args=config_loader_args)
+    return inject_settings(load_settings_from_config_loader, param_name=param_name, config_loader_args=config_loader_args)
