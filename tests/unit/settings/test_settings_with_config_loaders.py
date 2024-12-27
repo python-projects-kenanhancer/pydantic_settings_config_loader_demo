@@ -118,7 +118,7 @@ class TestSettingsWithConfigLoaders:
         ],
         indirect=["env_suffix"],  # Resolve the `settings` parameter via the fixture
     )
-    def test_settings_with_different_environments_v1(self, settings: UnifiedSettings, expected_settings):
+    def test_settings_with_different_environments(self, settings: UnifiedSettings, expected_settings):
 
         for section, fields in expected_settings.items():
             for field, expected_value in fields.items():
